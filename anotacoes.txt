@@ -1,0 +1,35 @@
+﻿Obj Cliente
+/api/users/create
+	nome
+	data nasc
+	Tele
+	Email
+	senha
+
+/api/users/search-product
+	// interações do cliente com os produtos
+	// filtar, procurar, 
+	key-words
+	filters
+
+/api/users/create-list
+	nome
+	desc
+
+/api/users/update-wish-list
+	product
+
+/api/users/update-list
+	[products]
+
+
+Obj Varejista
+/api/retailer/create
+	CNPJ
+	desc
+	localizaçao
+	
+Obj User
+api/security/logon/
+	user
+	password
