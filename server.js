@@ -3,8 +3,17 @@ var express = require('express');
 var app = express();
 // Porta do server
 var port = 3000;
+// Criando uma instância do UserController
+var user = require('./Controllers/UserController');
+// Criando uma instância do ClientController
+var client = require('./Controllers/ClientController');
+// Criando uma instância do RetailerController
+var retailer = require('./Controllers/RetailerController');
 
 // http://expressjs.com/pt-br/guide/error-handling.html
+
+// http://localhost:3000/api/users/create
+app.get('/api/users/create', client.create);
 
 // http://localhost:3000/api/security/logon/JoaoPauloSG/123456
 app.post('/api/security/logon', function (req, res) {
