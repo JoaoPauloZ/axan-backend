@@ -5,12 +5,13 @@ let URL = "postgres://postgres:123456@localhost/axan";
 var config = {
   user: 'postgres', //env var: PGUSER
   database: 'axan', //env var: PGDATABASE
-  password: '123456', //env var: PGPASSWORD
+  password: ' 123456', //env var: PGPASSWORD
   host: 'localhost', // Server hosting the postgres database
   port: 5432, //env var: PGPORT
   max: 10, // max number of clients in the pool
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
 };
+
 
 var user = {
 
@@ -48,7 +49,7 @@ var user = {
             }
             
             db.end(function (err) {
-               if (err) {
+               if (err){
                   return console.log("error encerrando a conexão");
                } else {
                   console.log("conexão encerrada");
@@ -83,6 +84,40 @@ var user = {
 
    logoff: function(req, res) {
       
+   },
+
+   signin: function(req, res){
+      var db = new pg.Client(config);
+
+      var sql = "insert into usuario (nm_usuario, ds_senha, dt_nascimento, ds_email, nr_celular, nr_ddd, cd_pais)" +
+                "values ('" + req.headers["nm_usuario"] + "', '" + req.headers["ds_senha"] + "', to_date('" + req.headers["dt_nascimento"] + "', 'dd/mm/yyyy'), '" +
+                req.headers["ds_email"] + "', " + req.headers["nr_celular"] + ", " + req.headers["nr_ddd"] + ", '" + req.headers["cd_pais"] + "' ) "
+
+      console.log(sql); 
+
+      db.connect(function(err) {
+        if (err) throw err;
+
+        db.query(sql, null, function(err, result){
+          if (err){
+            db.end(function(err){
+              if (err) throw err; else console.error("conexão encerra");
+            });
+            throw err;
+          }
+          db.end(function(err){
+            if (err) throw err; 
+            else{ 
+              return res.status(200).send({
+                result : {
+                  msg : "Usuario cadastrado com sucesso!",
+                  id_Nm : req.nm_usuario  
+                }
+              })
+              console.log("conexão encerrada");}
+          });
+        });
+      });
    }
 
 };
