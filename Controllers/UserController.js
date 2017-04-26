@@ -12,7 +12,6 @@ var config = {
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
 };
 
-
 var user = {
 
    logon: function(req, res) {
@@ -49,7 +48,7 @@ var user = {
             }
             
             db.end(function (err) {
-               if (err){
+               if (err) {
                   return console.log("error encerrando a conexão");
                } else {
                   console.log("conexão encerrada");
