@@ -14,10 +14,19 @@ ie_tipo_user: 0
 salt: "dsldjskaldlksa"
 cd_pais: "BR"
 
-result : {
+{
+
+  result : [
+
+      {
              msg : "Usuario cadastrado com sucesso!",
-             id_Nm : req.nm_usuario  
-        }
+  
+            id_Nm : req.nm_usuario  
+        
+      }
+  
+}
+
 ##########################################
 
 ##################################################
@@ -26,15 +35,26 @@ http://localhost:3000/api/product/search
 q : "Banana"
 
 {
+
   "result": [
-    {
+
+  {
       "name": "batata",
+  
       "picture": "https://maxcdn.icons8.com/Share/icon/Plants//potato1600.png",
+      
       "cod": 1,
+      
       "price": "2.00"
-    }
+    
+  }
+  
   ],
+  
   "status": null,
+  
   "messages": null
+
 }
+
 ##########################################
