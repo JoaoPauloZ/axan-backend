@@ -25,14 +25,16 @@ Exemplo Busca Produto(Get) :
 http://localhost:3000/api/product/search
 q : "Banana"
 
-"result": {
-    "produtos": [
-      {
-        "cod": 3,
-        "name": "Banana",
-        "preco": "R$0,99"
-      }
-    ]
-  },
-  "message": ""
+{
+  "result": [
+    {
+      "name": "batata",
+      "picture": "https://maxcdn.icons8.com/Share/icon/Plants//potato1600.png",
+      "cod": 1,
+      "price": "2.00"
+    }
+  ],
+  "status": null,
+  "messages": null
+}
 ##########################################
