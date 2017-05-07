@@ -2,59 +2,123 @@
 Backend do aplicativo AXAN para a disciplina de Projeto de Software II.
 
 ##################################################
-Exemplo Cadastro Usuário(Post):
-http://localhost:3000/api/users/signin/
-nm_usuario: "Comprador 01"
-ds_senha: "123456"
-dt_nascimento: 10-01-1980
+
+Exemplo Cadastro Usuário:
+
+URL: http://localhost:3000/api/users/signin/
+
+method: 'POST'
+
+
+headers params:
+
+user: "Comprador 01"
+
+password: "123456"
+
+birthday_date: 10-01-1980
+
 ds_email: "email@email.com"
-nr_celular: 900000000
-nr_ddd: 47
-ie_tipo_user: 0
-salt: "dsldjskaldlksa"
-cd_pais: "BR"
+
+email: 900000000
+
+cellphone: 47
+
+
+RESULT EXEMPLO:
 
 {
 
-  result : [
+  "result" : [
 
       {
-             msg : "Usuario cadastrado com sucesso!",
-  
-            id_Nm : req.nm_usuario  
+            
+            "id" : nm_usuario  
         
       }
   
+  ],
+  
+  "status": SUCESS,
+  
+  "mensagens":[
+  
+    "Usuario cadastrado com sucesso!"
+  
+  ]
+  
 }
 
-##########################################
-
 ##################################################
-Exemplo Busca Produto(Get) :
-http://localhost:3000/api/product/search
+
+Exemplo Busca Produto :
+
+URL: http://localhost:3000/api/product/search
+
+method: 'GET'
+
+
+Query param:
+
 q : "Banana"
+
+
+RESULT EXEMPLO:
 
 {
 
   "result": [
 
-  {
-      "name": "batata",
+    {
+        "name": "batata",
   
-      "picture": "https://maxcdn.icons8.com/Share/icon/Plants//potato1600.png",
+        "picture": "https://maxcdn.icons8.com/Share/icon/Plants//potato1600.png",
       
-      "cod": 1,
+        "cod": 1,
       
-      "price": "2.00"
+        "price": "2.00"
     
-  }
+    }
   
-  ],
-  
-  "status": null,
-  
-  "messages": null
+  ]
 
 }
 
 ##########################################
+
+
+Exemplo Cadastro de Preferências :
+
+URL: http://localhost:3000/api/user/preference
+
+method: 'POST'
+
+
+Query param:
+
+freq: 1,
+
+butchery: 1,
+
+fruit: 2,
+
+bakery: 3
+
+TIPOS DE FREQUENCIA IDA AO MERCADO: Um vez por semana (1), Um vez por mês (2), Um vez a cada três meses(3)
+TIPOS DE FREQUENCIA COMPRA DE PRODUTO: Toda vez (1), Vez sim, vez não (2), Raramente (3)
+
+RESULT EXEMPLO:
+
+{
+
+  "result": [ ],
+  
+  "status": SUCESS,
+  
+  "mensagens":[
+  
+    "Prefência registrada com sucesso!"
+  
+  ]
+
+}
