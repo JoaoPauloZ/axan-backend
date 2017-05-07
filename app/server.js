@@ -21,8 +21,8 @@ app.post('/api/security/logon', user.logon);
 // http://localhost:3000/api/product/search
 app.get('/api/product/search', client.searchProduct);
 
-// http://localhost:3000/api/users/signin/
-app.post('/api/users/signin', user.signin);
+// http://localhost:3000/api/users/signUp/
+app.post('/api/users/signin/', user.signIn);
 
 //http://localhost:3000/api/client/get-lista-compras
 app.get('/api/lista-compras', function (req, res) {

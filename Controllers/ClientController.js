@@ -21,7 +21,7 @@ var clientController = {
    searchProduct: function(req, res) {
 
       // Acessando os parametros enviados pelo HEADER
-      const produto = req.headers['q'];
+      const produto = req.query.q || "";
 
       var db = new pg.Client(config);
 
@@ -29,9 +29,7 @@ var clientController = {
          
          if (err) {
             return res.status(400).json({
-               result: {
-               },
-               message: "Erro, a conexão com o Banco de Dados não foi estabelecida!" 
+               messagens: "Erro, a conexão com o Banco de Dados não foi estabelecida!" 
             });
          }
          
@@ -44,9 +42,7 @@ var clientController = {
                   if (err) {
                      console.log("Erro, a conexão com o Banco de Dados não foi encerrada!");
                      return res.status(400).json({
-                        result: {
-                        },
-                        message: "Erro, a conexão com o Banco de Dados não foi encerrada!" 
+                        menssagens: "Erro, a conexão com o Banco de Dados não foi encerrada!" 
                      });
                   }
                });
@@ -59,7 +55,8 @@ var clientController = {
                produtos.push({
                   cod: p.cd_produto,
                   name: p.nm_produto,
-                  preco: p.qt_preco
+                  price: p.qt_preco,
+                  picture: p.ds_picture
                });
             }
 
@@ -67,17 +64,12 @@ var clientController = {
               if (err) {
                   console.log("Erro, a conexão com o Banco de Dados não foi encerrada!");
                   return res.status(400).json({
-                     result: {
-                     },
-                     message: "Erro, a conexão com o Banco de Dados não foi encerrada!" 
-                     });
+                     menssagens: "Erro, a conexão com o Banco de Dados não foi encerrada!" 
+                    });
                   }
             });
 
-            return res.status(200).json({
-               result: {produtos},
-               message: "" 
-            });
+            return res.status(200).json({produtos});
 
          });
       });

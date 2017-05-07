@@ -86,12 +86,15 @@ var user = {
       
    },
 
-   signin: function(req, res){
+   signIn: function(req, res) {
+
+      console.log("Executando Sing In");
+
       var db = new pg.Client(config);
 
       var sql = "insert into usuario (nm_usuario, ds_senha, dt_nascimento, ds_email, nr_celular, nr_ddd, cd_pais)" +
-                "values ('" + req.headers["nm_usuario"] + "', '" + req.headers["ds_senha"] + "', to_date('" + req.headers["dt_nascimento"] + "', 'dd/mm/yyyy'), '" +
-                req.headers["ds_email"] + "', " + req.headers["nr_celular"] + ", " + req.headers["nr_ddd"] + ", '" + req.headers["cd_pais"] + "' ) "
+                "values ('" + req.headers["user"] + "', '" + req.headers["password"] + "', to_date('" + req.headers["birthday_date"] + "', 'dd/mm/yyyy'), '" +
+                req.headers["ds_email"] + "', " + req.headers["email"] + ", " + req.headers["cellphone"] + ", '" + "+55" + "' ) "
 
       console.log(sql); 
 
@@ -105,16 +108,16 @@ var user = {
             });
             throw err;
           }
-          db.end(function(err){
+          db.end(function(err) {
             if (err) throw err; 
-            else{ 
+            else { 
+              console.log("conexão encerrada");
               return res.status(200).send({
-                result : {
-                  msg : "Usuario cadastrado com sucesso!",
-                  id_Nm : req.nm_usuario  
-                }
-              })
-              console.log("conexão encerrada");}
+                  id : req.nm_usuario,
+                  status: "SUCESS",
+                  mensagens : "Usuario cadastrado com sucesso!"
+              });
+            }
           });
         });
       });
