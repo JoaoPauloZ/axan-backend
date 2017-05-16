@@ -20,24 +20,26 @@ var banco = {
 		   db.connect(function(err) {
          
          if (err) {
-           callback(null, err);
+           callback("Erro, a conexão com o Banco de Dados não foi estabelecida!", null);
          }
          
         db.query(queryText, values, function(err, result) {
             if (err) {
                 db.end(function (err) {
                   if (err) {
-                      callback(null, err);
+                    console.log("Erro, a conexão com o Banco de Dados não foi encerrada!");
+                    callback("Erro, a conexão com o Banco de Dados não foi encerrada!", null);
                   } 
                 });
-                return callback(null, err);
+                return callback("error runnig query", null);
             }
             
             db.end(function (err) {
                 if (err) {
-                  return callback(null, err);
+                  console.log("Erro, a conexão com o Banco de Dados não foi encerrada!");
+                  return callback("Erro, a conexão com o Banco de Dados não foi encerrada!", null);
                 } else {
-                  return callback(result, null);
+                  return callback(null, result);
                 }
             });
 	      });
