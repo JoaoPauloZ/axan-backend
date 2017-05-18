@@ -115,9 +115,103 @@ RESULT EXEMPLO:
   
   "status": SUCESS,
   
-  "mensagens":[
+  "message":[
   
     "Prefência registrada com sucesso!"
+  
+  ]
+
+}
+
+##########################################
+
+
+Exemplo Adicionar produtos lista de compras :
+
+URL: http://localhost:3000/api/user/shopping-list/product/1
+
+method: 'POST'
+
+
+Path param:
+
+id-product: 1
+
+RESULT EXEMPLO:
+
+{
+
+  "result": [ ],
+  
+  "status": SUCESS,
+  
+  "message":[
+  
+    "Produto adicionado com sucesso!"
+  
+  ]
+
+}
+
+
+##########################################
+
+
+Exemplo Remover produtos lista de compras :
+
+URL: http://localhost:3000/api/user/shopping-list/product/1
+
+method: 'DELETE'
+
+
+Path param:
+
+id-product: 1
+
+RESULT EXEMPLO:
+
+{
+
+  "result": [ ],
+  
+  "status": SUCESS,
+  
+  "message":[
+  
+    "Produto removido com sucesso!"
+  
+  ]
+
+}
+
+
+
+
+##########################################
+
+
+Exemplo Listar produtos lista de compras :
+
+URL: http://localhost:3000/api/user/shopping-list
+
+method: 'GET'
+
+RESULT EXEMPLO:
+
+{
+
+  "result": [ 
+  
+  {
+        "name": "batata",
+  
+        "picture": "https://maxcdn.icons8.com/Share/icon/Plants//potato1600.png",
+      
+        "cod": 1,
+      
+        "price": "2.00"
+    
+    }
   
   ]
 
