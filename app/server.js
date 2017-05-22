@@ -24,6 +24,9 @@ app.get('/api/product/search', client.searchProduct);
 // http://localhost:3000/api/users/signUp/
 app.post('/api/users/signin/', user.signIn);
 
+// http://localhost:3000/api/user/preference
+app.post('/api/user/preference/', user.preference);
+
 //http://localhost:3000/api/client/get-lista-compras
 app.get('/api/lista-compras', function (req, res) {
 	// Retornando um Objeto JSON com uma lista de produtos
