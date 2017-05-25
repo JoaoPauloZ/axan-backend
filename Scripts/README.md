@@ -1,5 +1,5 @@
 * Query_create_table :
-	Query de criação das tabelas básicas
+	Query de criação das tabelas básicas (Não rodar se o banco já está criado)
 
 ----------------------------------------------------------------
 * Script01 :
