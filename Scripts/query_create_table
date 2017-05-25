@@ -1,0 +1,51 @@
+create table usuario (
+id_usuario      serial primary key,
+nm_usuario 	text,
+ds_senha 	text not null check (ds_senha <> ''),
+dt_nascimento 	date not null,
+ds_email 	varchar(100) check (ds_email <> ''),
+nr_celular 	numeric(9) not null,
+nr_ddd		numeric(3) not null,
+ie_tipo_user	integer not null default 1,
+salt		char(64),
+cd_pais		varchar(4) not null check (cd_pais <> ''),
+constraint id_user unique (nr_celular,nr_ddd)
+);
+
+create table categoria (
+cd_categoria	SERIAL primary key,
+nm_categoria	varchar(200) not null check (nm_categoria <> ''),
+ds_categoria	varchar(500)
+);
+
+create table varejista (cnpj varchar(11) primary key, nm_varejista varchar(100), nr_telefone numeric(12));
+
+create table produto (
+cd_produto	SERIAL primary key,
+nm_produto	varchar(200) not null check (nm_produto <> ''),
+qt_preco	money not null,
+cnpj_varejista	varchar(11) references varejista (cnpj),
+cd_categoria	integer references categoria (cd_categoria)
+);
+
+create table lista_compra (
+cd_lista_compra	SERIAL primary key,
+nm_lista_compra	varchar(200),
+ds_lista_compra varchar(500),
+id_usuario	integer references usuario (id_usuario)
+);
+
+create table produtos_lista_compra (
+cd_lista_compra	integer,
+cd_produto	integer,
+qt_quantidade	integer,
+unique (cd_lista_compra, cd_produto)
+);
+
+create table log_pesquisa (
+cd_log 		integer,
+cd_usuario	integer,
+ds_log		varchar(100),
+dt_atualizacao	timestamp DEFAULT current_timestamp,
+unique (cd_log,cd_usuario)
+);
