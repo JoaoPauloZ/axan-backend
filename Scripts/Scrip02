@@ -1,0 +1,13 @@
+alter table questao_preferencia add column cd_categoria integer;
+
+alter table questao_preferencia add constraint questao_categoria_fk foreign key (cd_categoria) references categoria (cd_categoria);
+
+drop table produtos_lista_compra;
+
+create table produtos_lista_compra (id_usuario integer, cd_produto integer, qt_quantidade integer);
+
+alter table produtos_lista_compra add constraint lista_usuario_fk foreign key (id_usuario) references usuario (id_usuario);
+
+alter table produtos_lista_compra add constraint lista_produto_fk foreign key (cd_produto) references produto (cd_produto);
+
+alter table usuario add constraint email_uk unique (ds_email);
