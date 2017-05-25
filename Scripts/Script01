@@ -1,0 +1,66 @@
+ALTER TABLE produto ADD COLUMN ds_picture text;
+
+create table questao_preferencia (id_questao serial primary key,
+                               ds_questao varchar(500));
+
+insert into questao_preferencia values (default,'Frequência de ida ao supermercado');
+insert into questao_preferencia values (default,'Com que frequência você compra carne');
+insert into questao_preferencia values (default,'Com que frequência você compra frutas');
+insert into questao_preferencia values (default,'Com que frequência você compra arroz');
+insert into questao_preferencia values (default,'Com que frequencia você compra leite');
+
+commit;
+
+create table preferencia_usuario (id_preferencia_usuario serial primary key,
+                       id_questao integer,
+                       id_usuario integer,
+                       id_valor integer);
+					   
+alter table preferencia_usuario add constraint preferencia_usuario_questao_fk FOREIGN KEY (id_questao)
+        REFERENCES questao_preferencia (id_questao);
+		
+alter table preferencia_usuario add constraint preferencia_usuario_usuario_fk FOREIGN KEY (id_usuario)
+        REFERENCES usuario (id_usuario);
+		
+alter table preferencia_usuario add constraint preferencia_usuario_valor_fk FOREIGN KEY (id_valor)
+        REFERENCES valor_preferencia (id_valor);
+					   
+insert into usuario values (default, 'joao123','askdmadmasdm',to_date('01/05/1990','dd/mm/yyyy'),
+                            'joao123@gmail.com',995544878,47,2,null,55);
+							
+insert into preferencia_usuario values (default,1,1,3);
+
+commit;
+
+drop table log_preferencia_usuario;
+
+create table log_preferencia_usuario_usuario (id_preferencia_usuario serial primary key,
+                                   id_usuario integer,
+                                   ds_log text,
+                                   dt_atualizacao timestamp,
+                                   constraint log_preferencia_usuario_usuario foreign key (id_usuario)
+                                   references usuario (id_usuario));
+								   
+insert into log_preferencia_usuario_usuario values (default,1,'ervilha',current_timestamp);
+insert into log_preferencia_usuario_usuario values (default,1,'ervilha',current_timestamp);
+insert into log_preferencia_usuario_usuario values (default,1,'carne',current_timestamp);
+insert into log_preferencia_usuario_usuario values (default,1,'enlatado',current_timestamp);
+
+commit;
+
+create table valor_preferencia (id_valor serial,ds_valor varchar(255),qt_pontuacao float)
+
+alter table valor_preferencia add column id_questao integer
+
+alter table valor_preferencia add constraint valor_questao_fk foreign key (id_questao) references questao_preferencia (id_questao)
+
+alter table valor_preferencia add constraint id_valor_pk primary key (id_valor)
+		
+alter table preferencia_usuario add constraint preferencia_usuario_valor_fk FOREIGN KEY (id_valor)
+        REFERENCES valor_preferencia (id_valor);
+		
+insert into valor_preferencia values (default,'Uma vez por semana',10);
+insert into valor_preferencia values (default,'Duas vezez por semana',20);
+insert into valor_preferencia values (default,'Tres vezez por semana',30);
+
+commit;
