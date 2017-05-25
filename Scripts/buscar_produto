@@ -1,0 +1,14 @@
+create type busca as (cd_prod_cat integer, ds_tipo varchar);
+
+
+CREATE OR REPLACE FUNCTION buscar_produto(ds_descricao_p varchar, ie_tipo_p varchar default 'P') returns SETOF busca as $$ 
+	
+	select cd_produto, 'P' ds_tipo from produto where ie_tipo_p in ('P','T') and upper(nm_produto) like upper('%'||ds_descricao_p||'%')
+	union
+	select cd_categoria, 'C' ds_tipo 
+	from categoria 
+	where ie_tipo_p in ('C','T') 
+	and (upper(nm_categoria) like upper('%'||ds_descricao_p||'%') or upper(ds_categoria) like upper('%'||ds_descricao_p||'%'))
+	
+	
+$$ language 'sql'; 
