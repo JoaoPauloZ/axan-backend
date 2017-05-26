@@ -27,43 +27,14 @@ app.post('/api/users/signin/', user.signIn);
 // http://localhost:3000/api/user/preference
 app.post('/api/user/preference/', user.preference);
 
-//http://localhost:3000/api/client/get-lista-compras
-app.get('/api/lista-compras', function (req, res) {
-	// Retornando um Objeto JSON com uma lista de produtos
-	return res.json({
-		result: {
-			produtos:[
-				{
-					nome: "Batata",
-					preco: 12.00,
-				},
-				{
-					nome: "Arroz",
-					preco: 8.00,
-				},
-				{
-					nome: "Feijão",
-					preco: 13.50,
-				},
-				{
-					nome: "Maça",
-					preco: 5.80,
-				},
-				{
-					nome: "Banana",
-					preco: 3.86,
-				},
-				{
-					nome: "Picanha",
-					preco: 38.00,
-				},
-				{
-					nome: "Macarrão",
-					preco: 3.20,
-				}]
-		}
-	});
-});
+// http://localhost:3000/api/client/wish-list/
+app.get('/api/user/shopping-list/', client.getShoppingList);
+
+// http://localhost:3000/api/client/wish-list/
+app.post('/api/user/shopping-list/product/:id/quantity/:qtd', client.addToShoppingList);
+
+// http://localhost:3000/api/user/shopping-list/product/
+app.delete('/api/user/shopping-list/product/:id', client.deleteFromShoppingList);
 
 // Iniciando o servidor
 app.listen(port, function () {
