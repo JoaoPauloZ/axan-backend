@@ -12,39 +12,41 @@ var config = {
    idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
 };
 
-var db = new pg.Client(config);
+var db;
 
 var banco = {
   
-	 execute: function (queryText, values, callback) {
-		   db.connect(function(err) {
-         
+	execute: function (queryText, values, callback) {
+		// É importante iniciar todas as vezes
+		db = new pg.Client(config);
+
+		// Conecta com o banco de dados
+		db.connect(function(err) {
+			if (err) {
+				return callback("Erro, a conexão com o Banco de Dados não foi estabelecida!", null);
+		}
+      // Executa o comando SQL
+      db.query(queryText, values, function(err, result) {
          if (err) {
-           callback("Erro, a conexão com o Banco de Dados não foi estabelecida!", null);
-         }
-         
-        db.query(queryText, values, function(err, result) {
-            if (err) {
-                db.end(function (err) {
-                  if (err) {
-                    console.log("Erro, a conexão com o Banco de Dados não foi encerrada!");
-                    callback("Erro, a conexão com o Banco de Dados não foi encerrada!", null);
-                  } 
-                });
-                return callback("error runnig query", null);
-            }
-            
             db.end(function (err) {
-                if (err) {
+               if (err) {
                   console.log("Erro, a conexão com o Banco de Dados não foi encerrada!");
-                  return callback("Erro, a conexão com o Banco de Dados não foi encerrada!", null);
-                } else {
-                  return callback(null, result);
-                }
+                  callback(err.message, null);
+               } 
             });
+               return callback(err.message, null);
+            } else {
+					db.end(function (err) {
+						if (err) {
+							console.log(err.message);
+							return callback(err.message, null);
+						}
+						return callback(null, result);
+					});
+				}
 	      });
-    });
-  }
+    	});
+  	}
 };
 
 module.exports = banco;

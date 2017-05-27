@@ -13,7 +13,7 @@ var clientController = {
          
       let SQL = "select * from produto where upper(nm_produto) like upper('%"+produto+"%')";
          
-         db.execute(SQL, null, function(err, result)  {
+         db.execute(SQL, [], function(err, result)  {
 
           if (err) {
             return res.status(400).json({
@@ -32,7 +32,7 @@ var clientController = {
                 picture: p.ds_picture
               });
           }
-          return res.status(200).json({result:produtos});
+         	return res.status(200).json({result:produtos});
       });
    },
 
