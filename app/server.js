@@ -22,10 +22,10 @@ app.post('/api/security/logon', user.logon);
 app.get('/api/product/search', client.searchProduct);
 
 // http://localhost:3000/api/users/signUp/
-app.post('/api/users/signin/', user.signIn);
+app.post('/api/users/sign-up/', user.signIn);
 
-// http://localhost:3000/api/user/preference
-app.post('/api/user/preference/', user.preference);
+// http://localhost:3000/api/users/preferences
+app.post('/api/users/preferences/', user.preference);
 
 // http://localhost:3000/api/client/wish-list/
 app.get('/api/user/shopping-list/', client.getShoppingList);
