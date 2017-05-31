@@ -21,19 +21,19 @@ app.post('/api/security/logon', user.logon);
 // http://localhost:3000/api/product/search
 app.get('/api/product/search', client.searchProduct);
 
-// http://localhost:3000/api/users/signUp/
-app.post('/api/users/sign-up/', user.signIn);
+// http://localhost:3000/api/user/sign-up/
+app.post('/api/user/sign-up/', user.signUp);
 
-// http://localhost:3000/api/users/preferences
-app.post('/api/users/preferences/', user.preference);
+// http://localhost:3000/api/user/preferences
+app.post('/api/user/preferences/', user.preference);
 
-// http://localhost:3000/api/client/wish-list/
+// http://localhost:3000/api/user/shopping-list/
 app.get('/api/user/shopping-list/', client.getShoppingList);
 
-// http://localhost:3000/api/client/wish-list/
+// http://localhost:3000/api/user/shopping-list/product/1/quantity/1
 app.post('/api/user/shopping-list/product/:id/quantity/:qtd', client.addToShoppingList);
 
-// http://localhost:3000/api/user/shopping-list/product/
+// http://localhost:3000/api/user/shopping-list/product/1
 app.delete('/api/user/shopping-list/product/:id', client.deleteFromShoppingList);
 
 // Iniciando o servidor
