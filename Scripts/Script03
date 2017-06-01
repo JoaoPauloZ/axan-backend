@@ -1,0 +1,41 @@
+insert into varejista values ('83648477105','Giassi supermercados',4834613433);
+insert into varejista values ('03634698195','Supermercado Big Ltda',1144141150);
+insert into varejista values ('03255612482','Supermercado Angeloni',4735697845);
+insert into varejista values ('01546555422','Supermercado Unidos',4732546555);
+insert into varejista values ('01111236548','Supermercado Ferreira',4733316275);
+insert into varejista values ('12411235751','Supermercado Amigão',4733306875);
+insert into varejista values ('60495565833','Supermercado Prosit',4732651222);
+insert into varejista values ('32665948011','Supermercado Cooper',4737658941);
+
+insert into categoria values (default,'Eletrodomésticos','Aqui você encontra desde TVs a Microondas');
+insert into categoria values (default,'Bebidas','Refrigerantes, Vinhos, Cerveja...');
+insert into categoria values (default,'Bomboniere e Biscoitos','Doces, bolachas, biscoitos...');
+insert into categoria values (default,'Carnes','Aqui você encontra desde carne bovina, suina, aves, peixes');
+insert into categoria values (default,'Hortifruti','Aqui você encontra frutas e verduras');
+insert into categoria values (default,'Higiene e Limpeza','Aqui você encontra tudo para limpeza da sua casa e sua saúde');
+
+
+alter table varejista add Lat DOUBLE PRECISION
+alter table varejista add Lon DOUBLE PRECISION
+
+update varejista
+set lat = -26.910955, lon = -49.113386
+where cnpj = '32665948011';
+
+update varejista
+set lat = -26.905953, lon = -49.077564
+where cnpj = '83648477105';
+
+update varejista
+set lat = -26.914056, lon = -49.110225
+where cnpj = '60495565833';
+
+update varejista
+set lat = -26.896920, lon = -49.072946
+where cnpj = '12411235751';
+
+update varejista
+set lat = -26.890702, lon = -49.089878
+where cnpj = '01111236548';
+
+insert into produto values (default,'Picanha',20.55,'32665948011',10,'');
