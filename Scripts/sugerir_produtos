@@ -1,29 +1,37 @@
-CREATE OR REPLACE FUNCTION sugerir_produtos(id_usuario_p int, cd_range_p int) returns TABLE(cd_produto integer) as $$ 
+drop FUNCTION public.sugerir_produtos(
+	id_usuario_p integer,
+	cd_range_p integer);
+
+CREATE OR REPLACE FUNCTION sugerir_produtos(id_usuario_p int, cd_range_p int) returns TABLE(cd_produto integer, latitude double precision, longitude double precision) as $$ 
 	
-	select t.cd_produto from (
-		select x.cd_produto, count(*) ct
-		from 
-			(select p.*
-			from preferencia_usuario a, valor_preferencia b, questao_preferencia c, produto p
-			where id_usuario = id_usuario_p
-			and a.id_valor = b.id_valor
-			and a.id_questao = c.id_questao
-			and p.cd_categoria = c.cd_categoria
-			order by qt_preco) x
-		group by cd_produto
-		union
-		select y.cd_prod_cat as cd_produto, count(*) ct
-		from (select * from log_pesquisa_usuario where id_usuario = id_usuario_p) x,
-			buscar_produto(x.ds_log,'P') y
-		group by cd_produto
-		union
-		select p.cd_produto, count(*) ct
-		from (select ds_log from log_pesquisa_usuario where id_usuario = id_usuario_p) x,
-			buscar_produto(x.ds_log,'C') y, categoria c, produto p
-		where c.cd_categoria = y.cd_prod_cat
-		and c.cd_categoria = p.cd_categoria
-		group by cd_produto) t
-	order by ct desc
-	limit cd_range_p
+	select p.cd_produto, lat, lon
+	from varejista v, produto p,
+		(select t.cd_produto from (
+			select x.cd_produto, count(*) ct
+			from 
+				(select p.*
+				from preferencia_usuario a, valor_preferencia b, questao_preferencia c, produto p
+				where id_usuario = id_usuario_p
+				and a.id_valor = b.id_valor
+				and a.id_questao = c.id_questao
+				and p.cd_categoria = c.cd_categoria
+				order by qt_preco) x
+			group by cd_produto
+			union
+			select y.cd_prod_cat as cd_produto, count(*) ct
+			from (select * from log_pesquisa_usuario where id_usuario = id_usuario_p) x,
+				buscar_produto(x.ds_log,'P') y
+			group by cd_produto
+			union
+			select p.cd_produto, count(*) ct
+			from (select ds_log from log_pesquisa_usuario where id_usuario = id_usuario_p) x,
+				buscar_produto(x.ds_log,'C') y, categoria c, produto p
+			where c.cd_categoria = y.cd_prod_cat
+			and c.cd_categoria = p.cd_categoria
+			group by cd_produto) t
+		order by ct desc
+		limit cd_range_p)
+	where p.cnpj_varejista = v.cnpj
+	and p.cd_produto = r.cd_produto
 	
 $$ language 'sql'; 
