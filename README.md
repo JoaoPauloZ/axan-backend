@@ -128,7 +128,7 @@ RESULT EXEMPLO:
 
 Exemplo Adicionar produtos lista de compras :
 
-URL: http://localhost:3000/api/user/shopping-list/product/1
+URL: http://localhost:3000/api/user/shopping-list/product/1/quantity/2
 
 method: 'POST'
 
