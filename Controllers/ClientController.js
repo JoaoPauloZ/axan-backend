@@ -38,110 +38,131 @@ var clientController = {
 
 	getShoppingList: function(req, res) {
 
-		let userId = "2"; // chamar função para acesar JWT
-		let SQL = "select a.cd_produto, a.nm_produto, a.ds_picture, a.qt_preco "+
-					 "from produto a, produtos_lista_compra b " +
-					 "where b.id_usuario = " + userId + " " +
- 					 "and b.cd_produto = a.cd_produto;"
+		let userId = utils.validateToken(req.headers["token"]);; // chamar função para acesar JWT
+		if (userId) {
+			let SQL = "select a.cd_produto, a.nm_produto, a.ds_picture, a.qt_preco::money::numeric::float8 " +
+				"from produto a, produtos_lista_compra b " +
+				"where b.id_usuario = " + userId + " " +
+				"and b.cd_produto = a.cd_produto;"
 
-		db.execute(SQL, [], function(err, result)  {
+			db.execute(SQL, [], function (err, result) {
 
-			if (err) {
-				return res.status(400).json({
-					result: [ ],
-					status: "ERROR",
-					message: [
-						err
-					]
-				});
-			}
-			
-			var myResult = [];
-			
-			if (result.rowCount > 0) {
-				for (var atual in result.rows) {
-					if (result.rows.hasOwnProperty(atual)) {
-						var element = result.rows[atual];
-						myResult.push({
-							cod: element.cd_produto,
-							name: element.nm_produto,
-							picture: element.ds_picture,
-							price: element.qt_preco
-						});
-					}
+				if (err) {
+					return res.status(400).json({
+						result: [],
+						status: "ERROR",
+						message: [
+							err
+						]
+					});
 				}
 
-				return res.status(200).json({
-					result: myResult,
-					status: "SUCESS",
-					message: [ ]
-				});
+				var myResult = [];
 
-			}
-    	});
+				if (result.rowCount > 0) {
+					for (var atual in result.rows) {
+						if (result.rows.hasOwnProperty(atual)) {
+							var element = result.rows[atual];
+							myResult.push({
+								cod: element.cd_produto,
+								name: element.nm_produto,
+								picture: element.ds_picture,
+								price: element.qt_preco
+							});
+						}
+					}
+
+					return res.status(200).json({
+						result: myResult,
+						status: "SUCESS",
+						message: []
+					});
+
+				}
+			});
+		} else {
+			return res.status(401).send({
+				result: [],
+				status: "INVALID TOKEN"
+			});
+		}
 
    },
 
-   addToShoppingList: function(req, res) {
-		
-		let cod_produto = req.params.id;
-    	let qtd_produto = req.params.qtd;
-		let userId = "2"; // chamar função para acesar JWT
-		let SQL = "insert into produtos_lista_compra (id_usuario, cd_produto, qt_quantidade) values ($1, $2, $3);";
-		let values = [userId, cod_produto, qtd_produto];
+   addToShoppingList: function (req, res) {
 
-		db.execute(SQL, values, function(err, result)  {
+	   let cod_produto = req.params.id;
+	   let qtd_produto = req.params.qtd;
+	   let userId = utils.validateToken(req.headers["token"]);; // chamar função para acesar JWT
+	   if (userId) {
+		   let SQL = "insert into produtos_lista_compra (id_usuario, cd_produto, qt_quantidade) values ($1, $2, $3);";
+		   let values = [userId, cod_produto, qtd_produto];
 
-			if (err) {
-				return res.status(400).json({
-					result: [ ],
-					status: "ERROR",
-					message: [
-						err
-					]
-				});
-			}
-			
-			// TODO: Verificar o result
+		   db.execute(SQL, values, function (err, result) {
 
-			return res.status(200).json({
-				result: [ ],
-				status: "SUCESS",
-				message: [
-					"Produto adicionado com sucesso!"
-				]
-      	});
-    	});
+			   if (err) {
+				   return res.status(400).json({
+					   result: [],
+					   status: "ERROR",
+					   message: [
+						   err
+					   ]
+				   });
+			   }
+
+			   // TODO: Verificar o result
+
+			   return res.status(200).json({
+				   result: [],
+				   status: "SUCESS",
+				   message: [
+					   "Produto adicionado com sucesso!"
+				   ]
+			   });
+		   });
+	   } else {
+		   return res.status(401).send({
+			   result: [],
+			   status: "INVALID TOKEN"
+		   });
+	   }
    },
 
 	deleteFromShoppingList: function(req, res) {
 		
 		let cod_produto = req.params.id;
-		let userId = "2"; // chamar função para acesar JWT
-		let SQL = "delete from produtos_lista_compra where id_usuario = "+userId+" and cd_produto = "+cod_produto+";";
-		
-		db.execute(SQL, [], function(err, result)  {
+		let userId = utils.validateToken(req.headers["token"]);; // chamar função para acesar JWT
+		if (userId) {
+			let SQL = "delete from produtos_lista_compra where id_usuario = " + userId + " and cd_produto = " + cod_produto + ";";
 
-			if (err) {
-				return res.status(400).json({
-					result: [ ],
-					status: "ERROR",
+			db.execute(SQL, [], function (err, result) {
+
+				if (err) {
+					return res.status(400).json({
+						result: [],
+						status: "ERROR",
+						message: [
+							err
+						]
+					});
+				}
+
+				// TODO: Verificar o result
+
+				return res.status(200).json({
+					result: [],
+					status: "SUCESS",
 					message: [
-						err
+						"Produto removido com sucesso!"
 					]
 				});
-			}
-			
-			// TODO: Verificar o result
-
-			return res.status(200).json({
-				result: [ ],
-				status: "SUCESS",
-				message: [
-					"Produto removido com sucesso!"
-				]
-      	});
-    	});
+			});
+		} else {
+			return res.status(401).send({
+				result: [],
+				status: "INVALID TOKEN"
+			});
+		}
    },
 
 };

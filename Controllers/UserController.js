@@ -1,14 +1,14 @@
 var db = require("../Dao/Conection");
+var utils = require("../Utils/UtilsAxan");
 
 var user = {
 
   signUp: function (req, res) {
 
-    const SQL = "insert into usuario (nm_usuario, ds_senha, dt_nascimento, ds_email, nr_celular, nr_ddd, cd_pais) " +
-      "values ($1, $2, to_date($3, 'dd/mm/yyyy'), $4, $5, $6, $7);"
-
-    const values = [req.headers["user"], req.headers["password"], req.headers["birthday_date"], req.headers["ds_email"], 
-    req.headers["email"], req.headers["cellphone"], "+55"];
+    const SQL = "select createUser( $1, $2, to_date($3, 'dd/mm/yyyy'), $4, $5, $6, $7) IDUSER";
+    const values = [req.headers["user"], req.headers["password"], req.headers["birthday_date"], req.headers["email"], 
+    req.headers["cellphone"], "47", "+55"];
+    console.log(values);
 
     db.execute(SQL, values, function (err, result) {
       if (err) {
@@ -18,10 +18,12 @@ var user = {
           message: [err]
         });
       } else {
+        console.log(result.rows[0].iduser);
+        let token = utils.createToken(result.rows[0].iduser, '1h');
         // Verificar se o select executou sem erros
         return res.status(200).send({
           result: [{
-            id: userAuth.nm_usuario
+            id: token
           }],
           status: "SUCESS",
           message: ["Usuario cadastrado com sucesso!"]
@@ -45,10 +47,11 @@ var user = {
       if (userAuth != null) {
 
         console.log("Usuário: " + userAuth.nm_usuario + ", autenticado com sucesso!");
-        
+         let token = utils.createToken(userAuth.id_usuario, '1h');
         return res.status(200).send({
           result: [{
-            id: userAuth.nm_usuario
+            id: userAuth.nm_usuario,
+            token : token
           }],
           status: "SUCESS",
           message: ["Usuário autenticado com sucesso!"]
@@ -72,7 +75,8 @@ var user = {
   },
 
   preference: function (req, res) {
-    var id = 1;
+    var id = utils.validateToken(req.headers["token"]);
+    console.log("ID: " + id);
     if (id) {
       var preferenceQuerry = req.query;
       var butchery = preferenceQuerry.butchery || 0;

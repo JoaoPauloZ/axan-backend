@@ -16,14 +16,14 @@ var db;
 
 var banco = {
   
-	execute: function (queryText, values, callback) {
+	execute: function (queryText, values, onExecute) {
 		// É importante iniciar todas as vezes
 		db = new pg.Client(config);
 
 		// Conecta com o banco de dados
 		db.connect(function(err) {
 			if (err) {
-				return callback("Erro, a conexão com o Banco de Dados não foi estabelecida!", null);
+				return onExecute("Erro, a conexão com o Banco de Dados não foi estabelecida!", null);
 		}
       // Executa o comando SQL
       db.query(queryText, values, function(err, result) {
@@ -31,17 +31,17 @@ var banco = {
             db.end(function (err) {
                if (err) {
                   console.log("Erro, a conexão com o Banco de Dados não foi encerrada!");
-                  callback(err.message, null);
+                  onExecute(err.message, null);
                } 
             });
-               return callback(err.message, null);
+               return onExecute(err.message, null);
             } else {
 					db.end(function (err) {
 						if (err) {
 							console.log(err.message);
-							return callback(err.message, null);
+							return onExecute(err.message, null);
 						}
-						return callback(null, result);
+						return onExecute(null, result);
 					});
 				}
 	      });
