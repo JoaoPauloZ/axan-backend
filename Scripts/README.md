@@ -32,6 +32,11 @@ Realizado alteração na tabela produtos_lista_compra, tirado PK e inserido fk i
 Realizado alteração na tabela usuario e adicionado unique key para o ds_email
 
 ----------------------------------------------------------------
+* Script03
+
+Carga de valores
+
+----------------------------------------------------------------
 * alterar_produto_lista
 
 Adiciona / exclui produto da lista do usuário
