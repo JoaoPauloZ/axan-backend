@@ -30,3 +30,9 @@ total_produtos_trazer: limite imposto para não trazer todos os registros, caso 
 Adicionado coluna cd_categoria na tabela questao_preferencia
 Realizado alteração na tabela produtos_lista_compra, tirado PK e inserido fk id_usuario
 Realizado alteração na tabela usuario e adicionado unique key para o ds_email
+
+----------------------------------------------------------------
+* alterar_produto_lista
+
+Adiciona / exclui produto da lista do usuário
+Como usar: select alterar_produto_lista(id_usuario,cd_produto,'D ou I') D para Delete e I para Insert
