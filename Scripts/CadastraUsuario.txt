@@ -1,0 +1,27 @@
+-- Function: public.createuser(character varying, character varying, date, character varying, integer, integer, integer)
+
+-- DROP FUNCTION public.createuser(character varying, character varying, date, character varying, integer, integer, integer);
+
+CREATE OR REPLACE FUNCTION public.createuser(
+    nameuser character varying,
+    passworduser character varying,
+    datebirthday date,
+    emailuser character varying,
+    usercellphone integer,
+    userdd integer,
+    usercountry integer)
+  RETURNS integer AS
+$BODY$
+DECLARE
+   quantidade integer := 0;
+begin
+	insert into usuario (id_usuario, nm_usuario, ds_senha, dt_nascimento, ds_email, nr_celular, nr_ddd, cd_pais) values (default, nameUser, passwordUser, dateBirthday,
+                            emailUser, userCellphone, userDD, userCountry);
+        quantidade := (SELECT MAX(id_usuario) FROM usuario);
+        RETURN quantidade;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.createuser(character varying, character varying, date, character varying, integer, integer, integer)
+  OWNER TO postgres;
