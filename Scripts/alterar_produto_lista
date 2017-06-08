@@ -1,0 +1,39 @@
+CREATE OR REPLACE FUNCTION alterar_produto_lista(id_usuario_p integer, cd_produto_p integer, ie_acao_p varchar) returns void as $$
+	
+declare
+
+	qt_reg_w numeric;
+
+begin
+
+	select	coalesce(max(qt_quantidade),0)
+	into	qt_reg_w
+	from	produtos_lista_compra
+	where	id_usuario = id_usuario_p
+	and		cd_produto = cd_produto_p;
+	
+	if (ie_acao_p = 'I') then
+		if (qt_reg_w > 0) then
+			update	produtos_lista_compra
+			set		qt_quantidade = qt_reg_w + 1
+			where	id_usuario = id_usuario_p
+			and		cd_produto = cd_produto_p;
+		else 
+			insert into produtos_lista_compra values (id_usuario_p,cd_produto_p,1);	
+		end if;
+	else
+		if (qt_reg_w > 1) then
+			update	produtos_lista_compra
+			set		qt_quantidade = qt_reg_w - 1
+			where	id_usuario = id_usuario_p
+			and		cd_produto = cd_produto_p;
+		else 
+			delete	from produtos_lista_compra 
+			where	id_usuario = id_usuario_p
+			and		cd_produto = cd_produto_p;
+		end if;
+	end if;
+
+end;
+	
+$$ language  plpgsql;
