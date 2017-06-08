@@ -33,7 +33,7 @@ RESULT EXEMPLO:
 
       {
             
-            "id" : nm_usuario  
+            "token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoxNiwiaWF0IjoxNDk2NDM1MDU4LCJleHAiOjE0OTY0Mzg2NTh9.DST4t2e4NCFUB_vQnMVN2bot5sRNKFrbVvsRxax2gf0"  
         
       }
   
@@ -49,6 +49,30 @@ RESULT EXEMPLO:
   
 }
 
+Exemplo Login:
+URL: http://localhost:3000/api/security/logon
+
+method : 'POST'
+
+headers params:
+
+user : email@email.com
+password : 23456
+
+{
+  "result" : [
+    "token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoxNiwiaWF0IjoxNDk2NDM1MDU4LCJleHAiOjE0OTY0Mzg2NTh9.DST4t2e4NCFUB_vQnMVN2bot5sRNKFrbVvsRxax2gf0" 
+  ],
+  
+  "status": SUCESS,
+  
+  "mensagens":[
+  
+    "Usuário autenticado com sucesso!"
+  
+  ]
+}
+
 ##################################################
 
 Exemplo Busca Produto :
@@ -56,7 +80,6 @@ Exemplo Busca Produto :
 URL: http://localhost:3000/api/product/search
 
 method: 'GET'
-
 
 Query param:
 
@@ -93,6 +116,9 @@ URL: http://localhost:3000/api/user/preference
 
 method: 'POST'
 
+headers params:
+
+token : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoxNiwiaWF0IjoxNDk2NDM1MDU4LCJleHAiOjE0OTY0Mzg2NTh9.DST4t2e4NCFUB_vQnMVN2bot5sRNKFrbVvsRxax2gf0"
 
 Query param:
 
@@ -132,6 +158,9 @@ URL: http://localhost:3000/api/user/shopping-list/product/1/quantity/2
 
 method: 'POST'
 
+headers params:
+
+token : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoxNiwiaWF0IjoxNDk2NDM1MDU4LCJleHAiOjE0OTY0Mzg2NTh9.DST4t2e4NCFUB_vQnMVN2bot5sRNKFrbVvsRxax2gf0"
 
 Path param:
 
@@ -163,6 +192,9 @@ URL: http://localhost:3000/api/user/shopping-list/product/1
 
 method: 'DELETE'
 
+headers params:
+
+token : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoxNiwiaWF0IjoxNDk2NDM1MDU4LCJleHAiOjE0OTY0Mzg2NTh9.DST4t2e4NCFUB_vQnMVN2bot5sRNKFrbVvsRxax2gf0"
 
 Path param:
 
@@ -195,6 +227,10 @@ Exemplo Listar produtos lista de compras :
 URL: http://localhost:3000/api/user/shopping-list
 
 method: 'GET'
+
+headers params:
+
+token : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoxNiwiaWF0IjoxNDk2NDM1MDU4LCJleHAiOjE0OTY0Mzg2NTh9.DST4t2e4NCFUB_vQnMVN2bot5sRNKFrbVvsRxax2gf0"
 
 RESULT EXEMPLO:
 

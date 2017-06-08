@@ -23,7 +23,7 @@ var user = {
         // Verificar se o select executou sem erros
         return res.status(200).send({
           result: [{
-            id: token
+            token: token
           }],
           status: "SUCESS",
           message: ["Usuario cadastrado com sucesso!"]
@@ -50,7 +50,6 @@ var user = {
          let token = utils.createToken(userAuth.id_usuario, '1h');
         return res.status(200).send({
           result: [{
-            id: userAuth.nm_usuario,
             token : token
           }],
           status: "SUCESS",
