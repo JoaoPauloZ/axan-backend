@@ -30,7 +30,7 @@ CREATE OR REPLACE FUNCTION sugerir_produtos(id_usuario_p int, cd_range_p int) re
 			and c.cd_categoria = p.cd_categoria
 			group by cd_produto) t
 		order by ct desc
-		limit cd_range_p)
+		limit cd_range_p) x
 	where p.cnpj_varejista = v.cnpj
 	and p.cd_produto = r.cd_produto
 	
