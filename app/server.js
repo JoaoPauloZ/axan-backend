@@ -12,9 +12,6 @@ var retailer = require('../Controllers/RetailerController');
 
 // http://expressjs.com/pt-br/guide/error-handling.html
 
-// http://localhost:3000/api/users/create
-app.get('/api/users/create', client.create);
-
 // http://localhost:3000/api/security/logon
 app.post('/api/security/logon', user.logon);
 
