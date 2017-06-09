@@ -1,3 +1,14 @@
+CREATE TABLE log_pesquisa_usuario
+(
+    id_pesquisa serial,
+    id_usuario integer,
+    ds_log text,
+    dt_atualizacao timestamp without time zone,
+    CONSTRAINT log_pesquisa_usuario_pkey PRIMARY KEY (id_pesquisa),
+    CONSTRAINT log_pesquisa_usuario FOREIGN KEY (id_usuario)
+        REFERENCES usuario (id_usuario) MATCH SIMPLE
+);
+
 ALTER TABLE produto ADD COLUMN ds_picture text;
 
 create table questao_preferencia (id_questao serial primary key,
@@ -30,31 +41,16 @@ insert into usuario values (default, 'joao123','askdmadmasdm',to_date('01/05/199
 							
 insert into preferencia_usuario values (default,1,1,3);
 
-commit;
-
-drop table log_preferencia_usuario;
-
-create table log_preferencia_usuario_usuario (id_preferencia_usuario serial primary key,
-                                   id_usuario integer,
-                                   ds_log text,
-                                   dt_atualizacao timestamp,
-                                   constraint log_preferencia_usuario_usuario foreign key (id_usuario)
-                                   references usuario (id_usuario));
-								   
-insert into log_preferencia_usuario_usuario values (default,1,'ervilha',current_timestamp);
-insert into log_preferencia_usuario_usuario values (default,1,'ervilha',current_timestamp);
-insert into log_preferencia_usuario_usuario values (default,1,'carne',current_timestamp);
-insert into log_preferencia_usuario_usuario values (default,1,'enlatado',current_timestamp);
 
 commit;
 
-create table valor_preferencia (id_valor serial,ds_valor varchar(255),qt_pontuacao float)
+create table valor_preferencia (id_valor serial,ds_valor varchar(255),qt_pontuacao float);
 
-alter table valor_preferencia add column id_questao integer
+alter table valor_preferencia add column id_questao integer;
 
-alter table valor_preferencia add constraint valor_questao_fk foreign key (id_questao) references questao_preferencia (id_questao)
+alter table valor_preferencia add constraint valor_questao_fk foreign key (id_questao) references questao_preferencia (id_questao);
 
-alter table valor_preferencia add constraint id_valor_pk primary key (id_valor)
+alter table valor_preferencia add constraint id_valor_pk primary key (id_valor);
 		
 alter table preferencia_usuario add constraint preferencia_usuario_valor_fk FOREIGN KEY (id_valor)
         REFERENCES valor_preferencia (id_valor);
