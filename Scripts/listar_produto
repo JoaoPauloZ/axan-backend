@@ -1,12 +1,21 @@
+CREATE OR REPLACE FUNCTION inserir_log(ds_descricao_p varchar, id_usuario_p integer) 
+returns void as $$ 
+
+	begin
+	if not (ds_descricao_p = '' or ds_descricao_p is null) then
+		insert into log_pesquisa_usuario values (default,id_usuario_p,ds_descricao_p,current_timestamp);
+    end if;
+    
+    end;	
+	
+$$ language  plpgsql;
+
 CREATE OR REPLACE FUNCTION listar_produto(ds_descricao_p varchar, id_usuario_p integer) 
 returns TABLE(cd_produto integer, nm_produto varchar, qt_preco money, cnpj_varejista varchar, cd_categoria integer, ds_picture text, latitude double precision, longitude double precision) as $$ 
-
-	insert into log_pesquisa_usuario values (default,id_usuario_p,ds_descricao_p,current_timestamp);
-	
+    
 	select 	p.*, v.lat, v.lon
-	from 	buscar_produto(ds_descricao_p,'P') as b, produto p, varejista v
+	from 	buscar_produto(ds_descricao_p,'P') as b, produto p, varejista v, inserir_log(ds_descricao_p,id_usuario_p)
 	where 	b.cd_prod_cat = p.cd_produto
-	and	 	p.cnpj_varejista = v.cnpj
+	and	 	p.cnpj_varejista = v.cnpj;
 	
-	
-$$ language 'sql'; 
+$$ language  'sql';
