@@ -15,8 +15,8 @@ insert into categoria values (default,'Hortifruti','Aqui você encontra frutas e
 insert into categoria values (default,'Higiene e Limpeza','Aqui você encontra tudo para limpeza da sua casa e sua saúde');
 
 
-alter table varejista add Lat DOUBLE PRECISION
-alter table varejista add Lon DOUBLE PRECISION
+alter table varejista add Lat DOUBLE PRECISION;
+alter table varejista add Lon DOUBLE PRECISION;
 
 update varejista
 set lat = -26.910955, lon = -49.113386
