@@ -1,0 +1,12 @@
+CREATE OR REPLACE FUNCTION listar_produto(ds_descricao_p varchar, id_usuario_p integer) 
+returns TABLE(cd_produto integer, nm_produto varchar, qt_preco money, cnpj_varejista varchar, cd_categoria integer, ds_picture text, latitude double precision, longitude double precision) as $$ 
+
+	insert into log_pesquisa_usuario values (default,id_usuario_p,ds_descricao_p,current_timestamp);
+	
+	select 	p.*, v.lat, v.lon
+	from 	buscar_produto(ds_descricao_p,'P') as b, produto p, varejista v
+	where 	b.cd_prod_cat = p.cd_produto
+	and	 	p.cnpj_varejista = v.cnpj
+	
+	
+$$ language 'sql'; 
