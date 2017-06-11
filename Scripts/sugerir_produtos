@@ -1,4 +1,4 @@
-drop FUNCTION sugerir_produtos(id_usuario_p int, cd_range_p int)
+drop FUNCTION sugerir_produtos(id_usuario_p int, cd_range_p int);
 
 CREATE OR REPLACE FUNCTION sugerir_produtos(id_usuario_p int, cd_range_p int) 
 returns TABLE(cd_produto integer, nm_produto varchar, qt_preco money, cnpj_varejista varchar, cd_categoria integer, ds_picture text, latitude double precision, longitude double precision) as $$ 
