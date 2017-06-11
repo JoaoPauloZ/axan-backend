@@ -1,10 +1,9 @@
-drop FUNCTION public.sugerir_produtos(
-	id_usuario_p integer,
-	cd_range_p integer);
+drop FUNCTION sugerir_produtos(id_usuario_p int, cd_range_p int)
 
-CREATE OR REPLACE FUNCTION sugerir_produtos(id_usuario_p int, cd_range_p int) returns TABLE(cd_produto integer, latitude double precision, longitude double precision) as $$ 
+CREATE OR REPLACE FUNCTION sugerir_produtos(id_usuario_p int, cd_range_p int) 
+returns TABLE(cd_produto integer, nm_produto varchar, qt_preco money, cnpj_varejista varchar, cd_categoria integer, ds_picture text, latitude double precision, longitude double precision) as $$ 
 	
-	select p.cd_produto, lat, lon
+	select p.cd_produto, nm_produto, qt_preco, cnpj_varejista, cd_categoria, ds_picture, lat, lon
 	from varejista v, produto p,
 		(select t.cd_produto from (
 			select x.cd_produto, count(*) ct
