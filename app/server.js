@@ -24,6 +24,9 @@ app.post('/api/user/sign-up/', user.signUp);
 // http://localhost:3000/api/user/preferences
 app.post('/api/user/preferences/', user.preference);
 
+// http://localhost:3000/api/user/suggestion-list
+app.get('/api/user/sugestion-list', client.getSuggestionsList);
+
 // http://localhost:3000/api/user/shopping-list/
 app.get('/api/user/shopping-list/', client.getShoppingList);
 
@@ -32,6 +35,7 @@ app.post('/api/user/shopping-list/product/:id/quantity/:qtd', client.addToShoppi
 
 // http://localhost:3000/api/user/shopping-list/product/1
 app.delete('/api/user/shopping-list/product/:id', client.deleteFromShoppingList);
+
 
 // Iniciando o servidor
 app.listen(port, function () {

@@ -33,6 +33,9 @@ var user = {
   },
 
   logon: function (req, res) {
+
+    console.log(new Date() + " Tentando logon");
+
     // Acessando os parametros enviados pelo Header
     const email = req.headers['user'];
     const pass  = req.headers['password'];
@@ -46,7 +49,7 @@ var user = {
       // Usuário autenticado com sucesso
       if (userAuth != null) {
 
-        console.log("Usuário: " + userAuth.nm_usuario + ", autenticado com sucesso!");
+        console.log(new Date() + " Usuário: " + userAuth.nm_usuario + ", autenticado com sucesso!");
          let token = utils.createToken(userAuth.id_usuario, '1h');
         return res.status(200).send({
           result: [{
@@ -62,7 +65,7 @@ var user = {
         return res.status(400).send({
           result: [],
           status: "ERROR",
-          message: ["Usuário ou senha incorretos!", err]
+            message: ["Usuário ou senha incorretos!", err ? err : ""]
         });
       }
     });

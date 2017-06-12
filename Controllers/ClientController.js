@@ -1,4 +1,5 @@
 var db = require("../Dao/Conection");
+var utils = require("../Utils/UtilsAxan");
 
 var clientController = {
 
@@ -9,48 +10,57 @@ var clientController = {
 		point.lat = parseFloat(req.query.lat) || 0;
 		point.lon = parseFloat(req.query.lon) || 0;
       
-      let SQL = "select p.* , v.lat, v.lon, v.cnpj " +
-					  "from produto p, varejista v " +
-					  "where p.cnpj_varejista = v.cnpj " +
-					  "and upper(nm_produto) like upper('%" + produto + "%')";
-      
-		db.execute(SQL, [], function(err, result)  {
+		let userId = utils.validateToken(req.headers["token"]); // chamar função para acesar JWT
+		if (userId) {
 
-			if (err) {
-				return res.status(400).json({
-					messages: [err]
+			let SQL = "select * from listar_produto('" + produto + "',"+userId+");";
+			
+			db.execute(SQL, [], function(err, result)  {
+
+				if (err) {
+					return res.status(400).json({
+						messages: [err]
+					});
+				}
+
+				// Se não ocorreu nenhum erro
+				var produtos = [];
+				for (var i = 0; i < result.rows.length; i++) {
+					var p = result.rows[i];
+					produtos.push({
+						cod: p.cd_produto,
+						name: p.nm_produto,
+						price: p.qt_preco,
+						picture: p.ds_picture,
+						cnpj: p.cnpj_varejista,
+						coord: {
+							lat: p.latitude ? p.latitude : 0,
+							lon: p.longitude ? p.longitude : 0
+						}
+					});
+				}
+
+				// Se informou a localização ordenar pela distância
+				if (point.lat !== 0 && point.lon !== 0) {
+					// ordenar pela distância
+					produtos = sortByDistance(point, produtos);
+					// remover propriedade coord
+					produtos.forEach(function(element) {
+						delete element.coord;
+					}, this);
+				}
+
+				res.status(200).json({
+					result:produtos,
+					status: "SUCCESS"
 				});
-			}
-
-			// Se não ocorreu nenhum erro
-			var produtos = [];
-			for (var i = 0; i < result.rows.length; i++) {
-				var p = result.rows[i];
-				produtos.push({
-					cod: p.cd_produto,
-					name: p.nm_produto,
-					price: p.qt_preco,
-					picture: p.ds_picture,
-					cnpj: p.cnpj_varejista,
-					coord: {
-						lat: p.lat ? p.lat : 0,
-						lon: p.lon ? p.lon : 0
-					}
-				});
-			}
-
-			// ordenar pela distância
-			produtos = sortByDistance(point, produtos);
-			// remover propriedade coord
-			produtos.forEach(function(element) {
-				delete element.coord;
-			}, this);
-
-			res.status(200).json({
-				result:produtos,
-				status: "SUCCESS"
 			});
-      });
+		} else {
+			return res.status(401).send({
+				result: [],
+				status: "INVALID TOKEN"
+			});
+		}
    },
 
 	getShoppingList: function(req, res) {
@@ -112,7 +122,8 @@ var clientController = {
 	   let qtd_produto = req.params.qtd;
 	   let userId = utils.validateToken(req.headers["token"]);; // chamar função para acesar JWT
 	   if (userId) {
-		   let SQL = "insert into produtos_lista_compra (id_usuario, cd_produto, qt_quantidade) values ($1, $2, $3);";
+
+		   let SQL = "select alterar_produto_lista("+userId+","+cod_produto+", 'I');";
 		   let values = [userId, cod_produto, qtd_produto];
 
 		   db.execute(SQL, values, function (err, result) {
@@ -150,7 +161,7 @@ var clientController = {
 		let cod_produto = req.params.id;
 		let userId = utils.validateToken(req.headers["token"]);; // chamar função para acesar JWT
 		if (userId) {
-			let SQL = "delete from produtos_lista_compra where id_usuario = " + userId + " and cd_produto = " + cod_produto + ";";
+			let SQL = "select alterar_produto_lista("+userId+","+cod_produto+", 'D');";
 
 			db.execute(SQL, [], function (err, result) {
 
@@ -182,11 +193,76 @@ var clientController = {
 		}
    },
 
+	getSuggestionsList: function(req, res) {
+		let userId = utils.validateToken(req.headers["token"]); // chamar função para acesar JWT
+		const point = {};
+		point.lat = parseFloat(req.query.lat) || 0;
+		point.lon = parseFloat(req.query.lon) || 0;
+		if (userId) {
+			let SQL = "select distinct cd_produto, nm_produto, ds_picture, qt_preco, latitude, longitude from sugerir_produtos("+userId+", 100);";
+
+			db.execute(SQL, [], function (err, result) {
+
+				if (err) {
+					return res.status(400).json({
+						result: [],
+						status: "ERROR",
+						message: [
+							err
+						]
+					});
+				}
+
+				var myResult = [];
+
+				if (result.rowCount > 0) {
+					for (var atual in result.rows) {
+						if (result.rows.hasOwnProperty(atual)) {
+							var p = result.rows[atual];
+							myResult.push({
+								cod: p.cd_produto,
+								name: p.nm_produto,
+								picture: p.ds_picture,
+								price: p.qt_preco,
+								coord: {
+									lat: p.latitude ? p.latitude : 0,
+									lon: p.longitude ? p.longitude : 0
+								}
+							});
+						}
+					}
+
+					if (point.lat !== 0 && point.lon !== 0) {
+						// ordenar pela distância
+						myResult = sortByDistance(point, myResult);
+						// remover propriedade coord
+						myResult.forEach(function(element) {
+							delete element.coord;
+						}, this);
+					}
+
+					return res.status(200).json({
+						result: myResult,
+						status: "SUCESS",
+						message: []
+					});
+
+				}
+			});
+		} else {
+			return res.status(401).send({
+				result: [],
+				status: "INVALID TOKEN"
+			});
+		}
+	}
+
 };
 
 module.exports = clientController;
 
 // Utilizado como base: 
+	
 	// https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 	/**
 	 * 
