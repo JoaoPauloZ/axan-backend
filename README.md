@@ -1,14 +1,14 @@
 # Axan Backend
 
-##### Backend do aplicativo AXAN para a disciplina de Projeto de Software II.
+### Backend do aplicativo AXAN para a disciplina de Projeto de Software II.
 #
 ## Especificação dos Serviços
 
 ####  Cadastro Usuário
-- ##### Resquest:
-    - ###### method: POST
-    - ###### url: http://localhost:3000/api/users/signin/
-    - ###### headers params:
+- #### Resquest:
+    - #### method: POST
+    - #### url: http://localhost:3000/api/users/signin/
+    - #### headers params:
     
         Key | Value
         --- | ---
@@ -19,7 +19,7 @@
         **email** | `900000000`
         **cellphone** | `47`
 
-- ##### Response:
+- #### Response:
     ```json
     {
         "result": [{
@@ -33,17 +33,17 @@
     ```
 
 ####  Login Usuário
-- ##### Resquest:
-    - ###### method: POST
-    - ###### url: http://localhost:3000/api/security/logon
-    - ###### headers params:
+- #### Resquest:
+    - #### method: POST
+    - #### url: http://localhost:3000/api/security/logon
+    - #### headers params:
         
         Key | Value
         --- | ---
         **user** | `email@email.com`
         **password** | `123456`
 
-- ##### Response:
+- #### Response:
  
     ```json
     {
@@ -58,21 +58,21 @@
     ```
 
 ####  Buscar Produto
-- ##### Resquest:
-    - ###### method: GET
-    - ###### url: http://localhost:3000/api/product/search
-    - ###### headers params:
+- #### Resquest:
+    - #### method: GET
+    - #### url: http://localhost:3000/api/product/search
+    - #### headers params:
       
         Key | Value
         --- | ---
         **token** | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9`
-    - ###### query params:
+    - #### query params:
        
         Key | Value
         --- | ---
         **q** | `bat`
 
-- ##### Response:
+- #### Response:
   
     ```json
     {
@@ -86,15 +86,15 @@
     }    
     ```
 ####  Cadastro de Preferências
-- ##### Resquest:
-    - ###### method: POST
-    - ###### url: http://localhost:3000/api/user/preferences
-    - ###### headers params:
+- #### Resquest:
+    - #### method: POST
+    - #### url: http://localhost:3000/api/user/preferences
+    - #### headers params:
        
         Key | Value
         --- | ---
         **token** | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9`
-    - ###### query params:
+    - #### query params:
        
         Key | Value
         --- | ---
@@ -102,7 +102,7 @@
         **butchery** | `1`
         **fruit** | `2`
         **bakery** | `3`
-    - ###### Obs: 
+    - #### Obs: 
         Tipos de frequência de ida ao mercado:
        
         freq | Value
@@ -118,7 +118,7 @@
         **1** | `Todas vez`
         **2** | `Vez sim, vez não`
         **3** | `Raramente`
-- ##### Response:
+- #### Response:
    
     ```json
     {
@@ -131,22 +131,22 @@
     ```
 
 ####  Adicionar produtos a lista de compras
-- ##### Resquest:
-    - ###### method: POST
-    - ###### url: http://localhost:3000/api/user/shopping-list/product/{id}/quantity/{qtd}
-    - ###### headers params:
+- #### Resquest:
+    - #### method: POST
+    - #### url: http://localhost:3000/api/user/shopping-list/product/{id}/quantity/{qtd}
+    - #### headers params:
         
         Key | Value
         --- | ---
         **token** | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9`
-    - ###### path params:
+    - #### path params:
         
         Key | Value
         --- | ---
         **id** | `1`
         **quantity** | `1`
     
-- ##### Response:
+- #### Response:
     
     ```json
     {
@@ -159,21 +159,21 @@
     ```
 
 ####  Remover produtos da lista de compras
-- ##### Resquest:
-    - ###### method: DELETE
-    - ###### url: http://localhost:3000/api/user/shopping-list/product/{id-product}
-    - ###### headers params:
+- #### Resquest:
+    - #### method: DELETE
+    - #### url: http://localhost:3000/api/user/shopping-list/product/{id-product}
+    - #### headers params:
         
         Key | Value
         --- | ---
         **token** | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9`
-    - ###### path params:
+    - #### path params:
         
         Key | Value
         --- | ---
         **id-product** | `1`
     
-- ##### Response:
+- #### Response:
     
     ```json
     {
@@ -186,16 +186,16 @@
     ```
     
 ####  Listar produtos da lista de compras 
-- ##### Resquest:
-    - ###### method: GET
-    - ###### url: http://localhost:3000/api/user/shopping-list
-    - ###### headers params:
+- #### Resquest:
+    - #### method: GET
+    - #### url: http://localhost:3000/api/user/shopping-list
+    - #### headers params:
         
         Key | Value
         --- | ---
         **token** | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9`
 
-- ##### Response:
+- #### Response:
    
     ```json
     {
