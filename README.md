@@ -70,7 +70,9 @@
        
         Key | Value
         --- | ---
-        **q** | `bat`
+        **q** (opicional) | `bat`
+        **lat** (opicional) | `-26.856554`
+        **lon** (opicional) | `-49.2391875`
 
 - #### Response:
   
@@ -85,6 +87,36 @@
         }]
     }    
     ```
+####  Buscar Sugestões de Produtos
+- #### Resquest:
+    - #### method: GET
+    - #### url: http://localhost:3000/api/user/sugestion-list
+    - #### headers params:
+      
+        Key | Value
+        --- | ---
+        **token** | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9`
+    - #### query params:
+       
+        Key | Value
+        --- | ---
+        **lat** (opicional) | `-26.856554`
+        **lon** (opicional) | `-49.2391875`
+
+- #### Response:
+
+    ```json
+    {
+        "result": [{
+            "name":"batata",
+            "picture":"https://maxcdn.icons8.com/Share/icon/Plants//potato1600.png",
+            "cod":1,
+            "price":"2.00",
+            "distance": 100
+        }]
+    }    
+    ```    
+
 ####  Cadastro de Preferências
 - #### Resquest:
     - #### method: POST
