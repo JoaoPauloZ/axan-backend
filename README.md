@@ -2,6 +2,21 @@
 
 ### Backend do aplicativo AXAN para a disciplina de Projeto de Software II.
 #
+## Configuração do Ambiente
+#### Requisitos:
+- ##### [Node.js](https://nodejs.org/en/) v6.11.0 LTS ou superior
+- ##### [PostgreSQL](https://www.bigsql.org/postgresql/installers.jsp/) v9.6.3 ou superior
+- ##### [VS Code](https://code.visualstudio.com) v1.12 ou superior (recomendado)
+
+#### Configurar e executar:
+
+- ##### Clonar este repositório
+- ##### Seguir os passos no [README](https://github.com/JoaoPauloZ/axan-backend/blob/master/Scripts/README.md) dos Scripts do Banco de Dados 
+- ##### Abrir a pasta local do repositório com o **Vs Code**
+- ##### Abrir o [Integrated Terminal](https://code.visualstudio.com/docs/editor/integrated-terminal) do **Vs Code**
+- ##### Executar o comando `npm install` (isto instalará todas as depêndencias do projeto)
+- ##### Executar o comando `node ./app/server` (isto executará o projeto)
+#
 ## Especificação dos Serviços
 
 ####  Cadastro Usuário
