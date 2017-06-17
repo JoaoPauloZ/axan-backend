@@ -254,3 +254,42 @@
         }]
     }    
     ```
+####  Consultar valor total da lista de compras
+- #### Resquest:
+    - #### method: GET
+    - #### url: http://localhost:3000/api/user/shopping-list/price
+    - #### headers params:
+      
+        Key | Value
+        --- | ---
+        **token** | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9`
+
+- #### Response:
+  
+    ```json
+    {
+        "result": [{
+            "price": "150,00"
+        }]
+    }    
+    ```
+####  Consultar local indicado para realizar a compra dos produtos da lista de compras
+- #### Resquest:
+    - #### method: GET
+    - #### url: http://localhost:3000/api/user/shopping-list/place
+    - #### headers params:
+      
+        Key | Value
+        --- | ---
+        **token** | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9`
+
+- #### Response:
+  
+    ```json
+    {
+        "result": [{
+            "latitude": 40.7143528,
+            "longitude": -74.0059731
+        }]
+    }    
+    ```
