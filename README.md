@@ -1,4 +1,4 @@
-# Axan Backend
+![axan logo](https://github.com/JoaoPauloZ/axan-backend/blob/master/axan%20logo.PNG)
 
 ### Backend do aplicativo AXAN para a disciplina de Projeto de Software II.
 #
