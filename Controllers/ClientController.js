@@ -105,6 +105,12 @@ var clientController = {
 						message: []
 					});
 
+				} else {
+					return res.status(200).json({
+						result: [],
+						status: "SUCCESS",
+						message: []
+					});
 				}
 			});
 		} else {
@@ -122,11 +128,10 @@ var clientController = {
 	   let qtd_produto = req.params.qtd;
 	   let userId = utils.validateToken(req.headers["token"]);
 	   if (userId) {
-
+			
 		   let SQL = "select alterar_produto_lista("+userId+","+cod_produto+", 'I');";
-		   let values = [userId, cod_produto, qtd_produto];
 
-		   db.execute(SQL, values, function (err, result) {
+		   db.execute(SQL, null, function (err, result) {
 
 			   if (err) {
 				   return res.status(400).json({
