@@ -10,7 +10,7 @@ var clientController = {
 		point.lat = parseFloat(req.query.lat) || 0;
 		point.lon = parseFloat(req.query.lon) || 0;
       
-		let userId = utils.validateToken(req.headers["token"]); // chamar função para acesar JWT
+		let userId = utils.validateToken(req.headers["token"]);
 		if (userId) {
 
 			let SQL = "select * from listar_produto('" + produto + "',"+userId+");";
@@ -65,7 +65,7 @@ var clientController = {
 
 	getShoppingList: function(req, res) {
 
-		let userId = utils.validateToken(req.headers["token"]);; // chamar função para acesar JWT
+		let userId = utils.validateToken(req.headers["token"]);
 		if (userId) {
 			let SQL = "select a.cd_produto, a.nm_produto, a.ds_picture, a.qt_preco::money::numeric::float8 " +
 				"from produto a, produtos_lista_compra b " +
@@ -101,7 +101,7 @@ var clientController = {
 
 					return res.status(200).json({
 						result: myResult,
-						status: "SUCESS",
+						status: "SUCCESS",
 						message: []
 					});
 
@@ -120,7 +120,7 @@ var clientController = {
 
 	   let cod_produto = req.params.id;
 	   let qtd_produto = req.params.qtd;
-	   let userId = utils.validateToken(req.headers["token"]);; // chamar função para acesar JWT
+	   let userId = utils.validateToken(req.headers["token"]);
 	   if (userId) {
 
 		   let SQL = "select alterar_produto_lista("+userId+","+cod_produto+", 'I');";
@@ -142,7 +142,7 @@ var clientController = {
 
 			   return res.status(200).json({
 				   result: [],
-				   status: "SUCESS",
+				   status: "SUCCESS",
 				   message: [
 					   "Produto adicionado com sucesso!"
 				   ]
@@ -159,7 +159,7 @@ var clientController = {
 	deleteFromShoppingList: function(req, res) {
 		
 		let cod_produto = req.params.id;
-		let userId = utils.validateToken(req.headers["token"]);; // chamar função para acesar JWT
+		let userId = utils.validateToken(req.headers["token"]);
 		if (userId) {
 			let SQL = "select alterar_produto_lista("+userId+","+cod_produto+", 'D');";
 
@@ -179,7 +179,7 @@ var clientController = {
 
 				return res.status(200).json({
 					result: [],
-					status: "SUCESS",
+					status: "SUCCESS",
 					message: [
 						"Produto removido com sucesso!"
 					]
@@ -193,8 +193,96 @@ var clientController = {
 		}
    },
 
+	getPriceShoppingList: function(req, res) {
+
+		let userId = utils.validateToken(req.headers["token"]);
+		if (userId) {
+			let SQL = "select sum(qt_preco * qt_Quantidade) " +
+						 "from produto p, produtos_lista_compra l " +
+						 "where p.cd_produto = l.cd_produto " +
+						 "and l.id_usuario = "+userId+";"
+
+			db.execute(SQL, [], function (err, result) {
+
+				if (err) {
+					return res.status(400).json({
+						result: [],
+						status: "ERROR",
+						message: [
+							err
+						]
+					});
+				}
+
+				if (result.rowCount > 0) {					
+					return res.status(200).json({
+						result: [{
+							price: result.rows[0].sum
+						}],
+						status: "SUCCESS",
+						message: []
+					});
+				}
+
+			});
+		} else {
+			return res.status(401).send({
+				result: [],
+				status: "INVALID TOKEN"
+			});
+		}
+
+   },
+
+	getPlaceShoppingList: function(req, res) {
+
+		let userId = utils.validateToken(req.headers["token"]);
+		if (userId) {
+			let SQL = "select lat, lon from varejista v, " +
+						 "(select count(cnpj_varejista) qt,cnpj_varejista " +
+						 "from produto p, produtos_lista_compra l " +
+						 "where p.cd_produto = l.cd_produto " +
+						 "and l.id_usuario = "+userId+" " +
+						 "group by cnpj_varejista " +
+						 "order by count(cnpj_varejista) DESC " +
+						 "limit 1) b " +
+						 "where b.cnpj_varejista = v.cnpj";
+
+			db.execute(SQL, [], function (err, result) {
+
+				if (err) {
+					return res.status(400).json({
+						result: [],
+						status: "ERROR",
+						message: [
+							err
+						]
+					});
+				}
+
+				if (result.rowCount > 0) {					
+					return res.status(200).json({
+						result: [{
+							latitude: result.rows[0].lat,
+							longitude: result.rows[0].lon
+						}],
+						status: "SUCCESS",
+						message: []
+					});
+				}
+
+			});
+		} else {
+			return res.status(401).send({
+				result: [],
+				status: "INVALID TOKEN"
+			});
+		}
+
+   },
+
 	getSuggestionsList: function(req, res) {
-		let userId = utils.validateToken(req.headers["token"]); // chamar função para acesar JWT
+		let userId = utils.validateToken(req.headers["token"]);
 		const point = {};
 		point.lat = parseFloat(req.query.lat) || 0;
 		point.lon = parseFloat(req.query.lon) || 0;
@@ -243,7 +331,7 @@ var clientController = {
 
 					return res.status(200).json({
 						result: myResult,
-						status: "SUCESS",
+						status: "SUCCESS",
 						message: []
 					});
 
@@ -262,50 +350,49 @@ var clientController = {
 module.exports = clientController;
 
 // Utilizado como base: 
-	
-	// https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
-	/**
-	 * 
-	 * @param {lat, lon} coordA 
-	 * @param {lat, lon} coordB 
-	 * @return distance in meters
-	 */
-	function distanceBetween (coordA, coordB) {
-		var R = 6378.1; // Radius of the earth in km
-		var PI_180 = (Math.PI/180);
-		var dLat = PI_180 * (coordB.lat-coordA.lat);  // deg2rad below
-		var dLon = PI_180 * (coordB.lon-coordA.lon); 
-		var a = 
-			Math.sin(dLat/2) * Math.sin(dLat/2) +
-			Math.cos(PI_180 * (coordA.lat)) * Math.cos(PI_180 * (coordB.lat)) * 
-			Math.sin(dLon/2) * Math.sin(dLon/2)
-		; 
-		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-		var d = R * c; // Distance in km
-		return parseFloat((d * 1000).toFixed(2)); // Distance in m
-	}
+// https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+/**
+ * 
+ * @param {lat, lon} coordA 
+ * @param {lat, lon} coordB 
+ * @return distance in meters
+ */
+function distanceBetween (coordA, coordB) {
+	var R = 6378.1; // Radius of the earth in km
+	var PI_180 = (Math.PI/180);
+	var dLat = PI_180 * (coordB.lat-coordA.lat);  // deg2rad below
+	var dLon = PI_180 * (coordB.lon-coordA.lon); 
+	var a = 
+		Math.sin(dLat/2) * Math.sin(dLat/2) +
+		Math.cos(PI_180 * (coordA.lat)) * Math.cos(PI_180 * (coordB.lat)) * 
+		Math.sin(dLon/2) * Math.sin(dLon/2)
+	; 
+	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+	var d = R * c; // Distance in km
+	return parseFloat((d * 1000).toFixed(2)); // Distance in m
+}
 
-	/**
-	 * Ordena os produtos pela distancia entre a propriedade coord e point
-	 * @param {*} point 
-	 * @param {*} products ordenados e sem a propriedade coord
-	 */
-	function sortByDistance (point, products) {
-		var aux;
-		for(var j = 0; j < products.length; j++) {
-			for(var i = 0; i < products.length -1; i++) {
-				if(!products[i].distance) {
-					products[i].distance = distanceBetween(point, products[i].coord);
-				}
-				if(!products[i+1].distance) {
-					products[i+1].distance = distanceBetween(point, products[i+1].coord);
-				}
-				if(products[i].distance > products[i+1].distance) {
-					aux = products[i+1];
-					products[i+1] = products[i];
-					products[i] = aux;
-				}
+/**
+ * Ordena os produtos pela distancia entre a propriedade coord e point
+ * @param {*} point 
+ * @param {*} products ordenados e sem a propriedade coord
+ */
+function sortByDistance (point, products) {
+	var aux;
+	for(var j = 0; j < products.length; j++) {
+		for(var i = 0; i < products.length -1; i++) {
+			if(!products[i].distance) {
+				products[i].distance = distanceBetween(point, products[i].coord);
+			}
+			if(!products[i+1].distance) {
+				products[i+1].distance = distanceBetween(point, products[i+1].coord);
+			}
+			if(products[i].distance > products[i+1].distance) {
+				aux = products[i+1];
+				products[i+1] = products[i];
+				products[i] = aux;
 			}
 		}
-		return products;
 	}
+	return products;
+}

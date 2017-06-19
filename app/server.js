@@ -30,12 +30,17 @@ app.get('/api/user/sugestion-list', client.getSuggestionsList);
 // http://localhost:3000/api/user/shopping-list/
 app.get('/api/user/shopping-list/', client.getShoppingList);
 
+// http://localhost:3000/api/user/shopping-list/price
+app.get('/api/user/shopping-list/price', client.getPriceShoppingList);
+
+// http://localhost:3000/api/user/shopping-list/place
+app.get('/api/user/shopping-list/place', client.getPlaceShoppingList);
+
 // http://localhost:3000/api/user/shopping-list/product/1/quantity/1
 app.post('/api/user/shopping-list/product/:id/quantity/:qtd', client.addToShoppingList);
 
 // http://localhost:3000/api/user/shopping-list/product/1
 app.delete('/api/user/shopping-list/product/:id', client.deleteFromShoppingList);
-
 
 // Iniciando o servidor
 app.listen(port, function () {

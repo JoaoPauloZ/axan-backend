@@ -72,10 +72,6 @@ var user = {
 
   },
 
-  logoff: function (req, res) {
-
-  },
-
   preference: function (req, res) {
     var id = utils.validateToken(req.headers["token"]);
     console.log("ID: " + id);
