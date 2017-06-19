@@ -274,6 +274,15 @@ var clientController = {
 						status: "SUCCESS",
 						message: []
 					});
+				}else{
+					return res.status(200).json({
+						result: [{
+							latitude: null,
+							longitude: null
+						}],
+						status: "SUCCESS",
+						message: []
+					});
 				}
 
 			});
