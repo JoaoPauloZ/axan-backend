@@ -202,7 +202,7 @@ var clientController = {
 
 		let userId = utils.validateToken(req.headers["token"]);
 		if (userId) {
-			let SQL = "select sum(qt_preco * qt_Quantidade) " +
+			let SQL = "select sum(qt_preco * qt_Quantidade)::money::numeric::float8 " +
 						 "from produto p, produtos_lista_compra l " +
 						 "where p.cd_produto = l.cd_produto " +
 						 "and l.id_usuario = "+userId+";"
@@ -222,7 +222,15 @@ var clientController = {
 				if (result.rowCount > 0) {					
 					return res.status(200).json({
 						result: [{
-							price: result.rows[0].sum
+							price: result.rows[0].sum || 0
+						}],
+						status: "SUCCESS",
+						message: []
+					});
+				}else{
+					return res.status(200).json({
+						result: [{
+							price: 0
 						}],
 						status: "SUCCESS",
 						message: []
