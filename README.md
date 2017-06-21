@@ -2,7 +2,12 @@
 
 ### Backend do aplicativo AXAN para a disciplina de Projeto de Software II.
 #
+### Projeto: AXAN
+### Integrantes: Gabriel Zanluca, Hélinton Pereira, Tamires K., João Paulo Serodio
+### Nº Projeto: 11.
+#
 ## Configuração do Ambiente
+
 #### Requisitos:
 - ##### [Node.js](https://nodejs.org/en/) v6.11.0 LTS ou superior
 - ##### [PostgreSQL](https://www.bigsql.org/postgresql/installers.jsp/) v9.6.3 ou superior
